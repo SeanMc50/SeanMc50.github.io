@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initialscale=1.0">
+<title>Document</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/fontawesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<style>
+    /* Create two unequal columns that floats next to each other */
+/* Left column */
+.leftcolumn {   
+  float: left;
+  width: 25%;
+  height: 100%;
+}
+
+.fieldow{
+  float: left;
+
+}
+
+.fieldrow2{
+  float: right;
+}
+
+/* Right column */
+.rightcolumn {
+  width: 38%;
+  height: 100%;
+  padding-left: 20px;
+}
+
+/* Right column */
+.right2column {
+  float: right;
+  width: 37%;
+  height: 100%;
+  padding-left: 20px;
+}
+
+.buttoncol {
+  width: 50%;
+  float: left
+
+}
+.buttoncol2 {
+  width: 50%;
+  float: right
+}
+
+canvas {
+        width: 38%;
+}
+
+table, th, td {
+  width: 900px;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+h1 {
+
+   }
+
+button {
+  display: flex;
+  width:50%;
+  padding: 5px;
+  justify-content: center;
+
+}
+
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div class="leftcolumn">
+        <div class="fieldrow">
+          <div class="fieldrow">
+            <h1>Teams</h1>
+            <p1 width = 25>Att Team</p1>
+            <input id=attTeam type=text width="75%">
+          </div>
+          <div class="fieldrow">
+            <p1  width = 25>Def Team</p1>
+            <input id=defTeam type=text width="75%">
+          </div>
+        </div>
+        <div class="fieldrow">
+            <h1>Possession Number</h1>
+            <input id=demoInput type=number min=0>
+            <button onclick="increment()">+</button>
+            <button onclick="decrement()">-</button>
+        </div>
+        <div class="fieldrow">
+            <h1>Direction</h1>
+            <button onclick="osOpen()">Attacking Open</button>
+            <button onclick="osShort()">Attacking Short</button>
+        </div>
+        <div class="fieldrow">
+          
+          <h1>Outcome</h1>
+          <div class="buttoncol">
+            <button value= "Tackle" onclick="out(this)">Tackle</button>
+            <button value= "Knock On" onclick="out(this)">Knock On</button>
+            <button value= "Into Touch" onclick="out(this)">Into Touch</button>
+            <button value= "Kicked Away" onclick="out(this)">Kicked Away</button>
+            <button value= "Try" onclick="out(this)">Try</button>
+            <button value= "Penalty - Off" onclick="out(this)">Penalty - Off</button>
+            <button value= "Penalty - Def" onclick="out(this)">Penalty - Def</button>
+            <button value= "Attack Start" onclick="out(this)">Attack Start</button>
+            <button value= "Turnover - Other" onclick="out(this)">Turnover - Other</button>
+          </div>
+          <div class="buttoncol2">
+            <button value= "Attack Start" onclick="out(this)">Attack Start</button>
+            <button value= "Set Piece - Scrum" onclick="out(this)">Set Piece - Scrum</button>
+            <button value= "Set Piece - Lineout" onclick="out(this)">Set Piece - Lineout</button>
+          </div>
+          <div>
+            <h3 >.</h3>
+            <h3 >.</h3>
+            <h3 >.</h3>
+            <h3 >.</h3>
+            <h3 >.</h3>
+          </div>
+        </div>
+        <div class="fieldrow">
+          <h1>Submit to Table</h1>
+          <button value= "Submit" onclick="post()">Submit</button>
+          <button value= "Clear Contents" onclick="erasure()">Clear Contents</button>
+        </div>
+        <div>
+          <h1>Preview the current phase</h1>
+          <table id="preview">
+              <tr>
+                  <td>Attacking Team</td>
+                  <td>Defending Team</td>
+                  <td>Possession #</td>
+                  <td>Att Side</td>
+                  <td>Pass Chain</td>
+                  <td>Outcome</td>
+                  <td>X</td>
+                  <td>Y</td>
+                  <td>Half</td>
+                  <td>Timestamp</td>
+              </tr>
+              <tr>
+                  <td><span id="team1">Null</span></td>
+                  <td><span id="team2">Null</span></td>
+                  <td><span id="pos">Null</span></td>
+                  <td><span id="os">Null</td>
+                  <td><span id="pc">Null</td>
+                  <td><span id="out">Null</td>
+                  <td><span id="x">Null</td>
+                  <td><span id="y">Null</td>
+                  <td><span id="half_tr">Null</td>
+                  <td><span id="yt_time">Null</td>
+              </tr>
+          </table>
+          <h1>Data Table</h1>
+          <button onclick="download_table_as_csv('final')">Export Table To CSV File</button>
+          <table id="final" style="display:none">
+            <tr>
+                <td>Attacking Team</td>
+                <td>Defending Team</td>
+                <td>Possession #</td>
+                <td>Att Side</td>
+                <td>Pass Chain</td>
+                <td>Outcome</td>
+                <td>X</td>
+                <td>Y</td>
+                <td>Half</td>
+                <td>Timestamp</td>
+            </tr>
+        </table>
+        </div>
+      </div>
+        
+  </div>
+    <div class = "rightcolumn"> 
+      <div>
+        <h1>Click on the field to set X,Y</h1>
+        <canvas id="myCanvas" style="position: absolute; left: 700; top: 60; z-index: 1;" onclick="addDot(event)"></canvas>
+        <canvas id="layer1" style="position: absolute; left: 700; top: 60; z-index: 0;"></canvas>
+      </div>
+      
+    </div>
+    <div class="right2column">
+        <p1>Youtube Link (11 Char end of URL)</p1>
+        <input id=link type=text width="75%" value="em0cfhGE5HM">
+        <div id="player"></div>
+        <button onclick="update_link(this)">Update link</button>
+      <div>
+        <h1>Handling Chain</h1>
+          <div class= "buttoncol">
+          <button value= "1" onclick="chain(this)" width= 10%>1</button>
+          <button value= "2" onclick="chain(this)" width= 10%>2</button>
+          <button value= "3" onclick="chain(this)" width= 10%>3</button>
+          <button value= "4" onclick="chain(this)" width= 10%>4</button>
+          <button value= "5" onclick="chain(this)" width= 10%>5</button>
+          <button value= "6" onclick="chain(this)" width= 10%>6</button>
+          <button value= "7" onclick="chain(this)" width= 10%>7</button>
+          <button value= "8" onclick="chain(this)" width= 10%>8</button>
+          <button value= "9" onclick="chain(this)" width= 10%>9</button>
+          <button value= "10" onclick="chain(this)" width= 10%>10</button>
+          <button value= "11" onclick="chain(this)" width= 10%>11</button>
+          <button value= "12" onclick="chain(this)" width= 10%>12</button>
+          <button value= "13" onclick="chain(this)" width= 10%>13</button>
+          <button value= "14" onclick="chain(this)" width= 10%>14</button>
+          <button value= "15" onclick="chain(this)" width= 10%>15</button>
+          </div>
+          <div class= "buttoncol2">
+            <button value= "16" onclick="chain(this)" width= 10%>16</button>
+            <button value= "17" onclick="chain(this)" width= 10%>17</button>
+            <button value= "18" onclick="chain(this)" width= 10%>18</button>
+            <button value= "19" onclick="chain(this)" width= 10%>19</button>
+            <button value= "20" onclick="chain(this)" width= 10%>20</button>
+            <button value= "21" onclick="chain(this)" width= 10%>21</button>
+            <button value= "22" onclick="chain(this)" width= 10%>22</button>
+            <button value= "23" onclick="chain(this)" width= 10%>23</button>
+            <h1>Attack Direction</h1>
+            <span aria-hidden="true">Attacking Right</span>
+            <input type="range" max="1" id="half" name="choice" value="0">
+            <span aria-hidden="true">Attacking Left</span>
+            </div>
+        
+          
+      </div>
+    </div>  
+<script>
+window.onload = function ()
+    { 
+      var canvas = document.getElementById('layer1');
+      var heightRatio = 0.5;
+      canvas.height = canvas.width * heightRatio;
+
+        var context = canvas.getContext('2d');
+
+        var img = new Image();
+        img.src = 'field.png';
+        img.onload = function (e)
+        {
+            context.drawImage(img, 0, 0, 300,150);
+        }
+    }
+    var canvas = document.getElementById('myCanvas');
+    var heightRatio = 0.5;
+    canvas.height = canvas.width * heightRatio;
+
+var passChain = [];
+
+   function increment() {
+      document.getElementById('demoInput').stepUp();
+      
+   }
+   function decrement() {
+      document.getElementById('demoInput').stepDown();
+   }
+   function osShort() {
+      document.getElementById('os').innerHTML = "Short Side";
+   }
+   function osOpen() {
+      document.getElementById('os').innerHTML = "Open Side";
+   }
+   function chain(e) {
+      passChain.push(e.value);
+      document.getElementById('pc').innerHTML = passChain;
+   }
+   function out(e) {
+      document.getElementById('out').innerHTML = e.value;
+      document.getElementById('team1').innerHTML = document.getElementById("attTeam").value;
+      document.getElementById('team2').innerHTML = document.getElementById("defTeam").value;
+      document.getElementById('pos').innerHTML = demoInput.value;
+      document.getElementById('half_tr').innerHTML = document.getElementById("half").value.toString();
+      document.getElementById('yt_time').innerHTML = Math.round(player.getCurrentTime()).toString();
+   }
+   function post() {
+      var table = document.getElementById('final');
+      var row = table.insertRow();
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      var cell4 = row.insertCell(3);
+      var cell5 = row.insertCell(4);
+      var cell6 = row.insertCell(5);
+      var cell7 = row.insertCell(6);
+      var cell8 = row.insertCell(7);
+      var cell9 = row.insertCell(8);
+      var cell10 = row.insertCell(9);
+      cell1.innerHTML = document.getElementById("team1").innerHTML
+      cell2.innerHTML = document.getElementById("team2").innerHTML
+      cell3.innerHTML = document.getElementById("pos").innerHTML
+      cell4.innerHTML = document.getElementById("os").innerHTML
+      cell5.innerHTML = document.getElementById("pc").innerHTML
+      cell6.innerHTML = document.getElementById("out").innerHTML
+      cell7.innerHTML = document.getElementById("x").innerHTML
+      cell8.innerHTML = document.getElementById("y").innerHTML
+      cell9.innerHTML = document.getElementById("half_tr").innerHTML
+      cell10.innerHTML = document.getElementById("yt_time").innerHTML
+      document.getElementById('team1').innerHTML = "Null"
+      document.getElementById("team2").innerHTML = "Null"
+      document.getElementById("pos").innerHTML = "Null"
+      document.getElementById("os").innerHTML = "Null"
+      document.getElementById("pc").innerHTML = "Null"
+      document.getElementById("out").innerHTML = "Null"
+      document.getElementById("x").innerHTML = "Null"
+      document.getElementById("y").innerHTML = "Null"
+      document.getElementById("half_tr").innerHTML = "Null"
+      document.getElementById("yt_time").innerHTML = "Null"
+      passChain = []
+   }
+   function erasure() {
+      document.getElementById('team1').innerHTML = "Null"
+      document.getElementById("team2").innerHTML = "Null"
+      document.getElementById("pos").innerHTML = "Null"
+      document.getElementById("os").innerHTML = "Null"
+      document.getElementById("pc").innerHTML = "Null"
+      document.getElementById("out").innerHTML = "Null"
+      document.getElementById("x").innerHTML = "Null"
+      document.getElementById("y").innerHTML = "Null"
+      document.getElementById("half_tr").innerHTML = "Null"
+      document.getElementById("yt_time").innerHTML = "Null"
+      passChain = []
+   }
+   function download_table_as_csv(table_id, separator = ',') {
+    // Select rows from table_id
+    var rows = document.querySelectorAll('table#' + table_id + ' tr');
+    // Construct csv
+    var csv = [];
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll('td, th');
+        for (var j = 0; j < cols.length; j++) {
+            // Clean innertext to remove multiple spaces and jumpline (break csv)
+            var data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
+            // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
+            data = data.replace(/"/g, '""');
+            // Push escaped string
+            row.push('"' + data + '"');
+        }
+        csv.push(row.join(separator));
+    }
+    var csv_string = csv.join('\n');
+    // Download it
+    var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
+    var link = document.createElement('a');
+    link.style.display = 'none';
+    link.setAttribute('target', '_blank');
+    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+   function addDot() {
+        const context = document.getElementById("myCanvas").getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var x = event.offsetX
+        var xStr = x.toString()
+        var y = event.offsetY
+        var yStr = y.toString()
+        var out = xStr.concat(",",yStr)
+        draw((x/canvas.offsetWidth)*300,(y/canvas.offsetHeight)*150)
+        document.getElementById('x').innerHTML = Math.round(x/canvas.offsetWidth*100)
+        document.getElementById('y').innerHTML = Math.round(y/canvas.offsetHeight*75)
+}
+    function draw(x, y) {
+        var color = 'red'
+        var canvas = document.getElementById('myCanvas');
+        var ctx = canvas.getContext('2d');
+        ctx.beginPath();
+        ctx.arc(x,y,1,0*Math.PI,2*Math.PI);
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = color;
+        ctx.stroke();
+        ctx.fillStyle = color
+        ctx.fill();
+    }
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // 3. This function creates an <iframe> (and YouTube player)
+    //    after the API code downloads.
+    var player;
+    var videoID_var = 'em0cfhGE5HM'
+    function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+        height: '500',
+        width: '100%',
+        videoId: videoID_var,
+        playerVars: {
+        'playsinline': 1
+        }
+    });
+    }
+
+    function update_link() {
+      player.loadVideoById(link.value);
+    }
+</script>
+</body>
+</html>
