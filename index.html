@@ -131,7 +131,7 @@
            HEADER
         ══════════════════════════════════════════════════ */
         .site-header {
-            flex-shrink: 0; height: 48px;
+            flex-shrink: 0; height: 56px;
             background: #000; border-bottom: 3px solid var(--yellow);
             display: flex; align-items: center; padding: 0 14px; gap: 12px;
         }
@@ -141,13 +141,17 @@
             letter-spacing: 2.5px; text-transform: uppercase; cursor: default;
         }
         .logo span { color: var(--yellow); }
-        .header-mid { flex: 1; display: flex; justify-content: center; }
-        .phase-counter {
-            font-family: 'Oswald', sans-serif; font-size: 12px; font-weight: 500;
-            text-transform: uppercase; letter-spacing: 2px; color: var(--text-3);
+        .header-preview {
+            flex: 1; overflow-x: auto; align-self: stretch; display: flex; align-items: center;
         }
-        .phase-counter b { color: var(--yellow); font-size: 15px; font-weight: 700; }
-        .header-btns { display: flex; gap: 4px; }
+        .header-preview::-webkit-scrollbar { height: 0; }
+        .phase-counter {
+            font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 500;
+            text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-3);
+            white-space: nowrap;
+        }
+        .phase-counter b { color: var(--yellow); font-size: 13px; font-weight: 700; }
+        .header-btns { display: flex; align-items: center; gap: 8px; }
         .btn-hdr {
             background: transparent; border: 1px solid var(--border); color: var(--text-2);
             padding: 5px 12px; font-family: 'Oswald', sans-serif;
@@ -321,16 +325,15 @@
         .out-warning { background: #3d200a; color: var(--warning); }
         .out-info    { background: #0a1f3d; color: var(--info); }
 
-        /* ── Phase preview table ── */
-        .preview-wrap { overflow-x: auto; }
+        /* ── Phase preview table (lives in header) ── */
         #preview { width: 100%; border-collapse: collapse; font-size: 10px; }
         #preview .tr2:first-child .td1 {
             font-family: 'Oswald', sans-serif; font-weight: 600;
             color: var(--text-2); text-transform: uppercase;
             font-size: 9px; letter-spacing: .07em;
-            padding: 5px 6px; border-bottom: 2px solid var(--yellow); background: #000;
+            padding: 3px 8px; border-bottom: 2px solid var(--yellow); background: #000;
         }
-        #preview .tr2:last-child .td1 { padding: 7px 6px; color: var(--text-1); font-size: 11px; }
+        #preview .tr2:last-child .td1 { padding: 5px 8px; color: var(--text-1); font-size: 11px; }
         .td1 { border-right: 1px solid var(--border); white-space: nowrap; }
         .td1:last-child { border-right: none; }
 
@@ -402,9 +405,9 @@
         </div> -->
         <div class="welcome-setup">
             <h2>Match Setup</h2>
-            <label for="attTeam">Attacking Team</label>
+            <label for="attTeam">Team Name</label>
             <input id="attTeam" type="text" placeholder="Enter team name" name="team-one">
-            <label for="defTeam">Defending Team</label>
+            <label for="defTeam">Opponent</label>
             <input id="defTeam" type="text" placeholder="Enter team name" name="team-two">
             <label for="yt_link">YouTube Video ID</label>
             <input type="text" placeholder="e.g. em0cfhGE5HM" name="yt-id" id="yt_link">
@@ -420,10 +423,33 @@
 ══════════════════════════════════════════════════ -->
 <header class="site-header">
     <span class="logo">Rugby<span>XY</span></span>
-    <div class="header-mid">
-        <span class="phase-counter">Phases Logged: <b id="phaseCount">0</b></span>
+    <div class="header-preview">
+        <table id="preview" class="preview_class">
+            <tr class="tr2">
+                <td class="td1">Team</td><td class="td1">Opp</td>
+                <td class="td1">Poss</td><td class="td1">Dir</td>
+                <td class="td1">Pass Chain</td><td class="td1">Rucks</td>
+                <td class="td1">Outcome</td><td class="td1">X</td>
+                <td class="td1">Y</td><td class="td1">Half</td>
+                <td class="td1">Time</td>
+            </tr>
+            <tr class="tr2">
+                <td class="td1"><span id="team1">—</span></td>
+                <td class="td1"><span id="team2">—</span></td>
+                <td class="td1"><span id="pos">—</span></td>
+                <td class="td1"><span id="os">—</span></td>
+                <td class="td1"><span id="pc">—</span></td>
+                <td class="td1"><span id="rucks">—</span></td>
+                <td class="td1"><span id="out">—</span></td>
+                <td class="td1"><span id="x">—</span></td>
+                <td class="td1"><span id="y">—</span></td>
+                <td class="td1"><span id="half_tr">—</span></td>
+                <td class="td1"><span id="yt_time">—</span></td>
+            </tr>
+        </table>
     </div>
     <div class="header-btns">
+        <span class="phase-counter">Phases: <b id="phaseCount">0</b></span>
         <button class="btn-hdr" onclick="showWelcome()">⚙ Setup</button>
     </div>
 </header>
@@ -577,35 +603,6 @@
                     </div>
                 </div>
 
-                <!-- Phase Preview -->
-                <div class="ctrl-card">
-                    <span class="ctrl-label">Phase Preview</span>
-                    <div class="preview-wrap">
-                        <table id="preview" class="preview_class">
-                            <tr class="tr2">
-                                <td class="td1">Team</td><td class="td1">Opp</td>
-                                <td class="td1">Poss</td><td class="td1">Dir</td>
-                                <td class="td1">Pass Chain</td><td class="td1">Rucks</td>
-                                <td class="td1">Outcome</td><td class="td1">X</td>
-                                <td class="td1">Y</td><td class="td1">Half</td>
-                                <td class="td1">Time</td>
-                            </tr>
-                            <tr class="tr2">
-                                <td class="td1"><span id="team1">—</span></td>
-                                <td class="td1"><span id="team2">—</span></td>
-                                <td class="td1"><span id="pos">—</span></td>
-                                <td class="td1"><span id="os">—</span></td>
-                                <td class="td1"><span id="pc">—</span></td>
-                                <td class="td1"><span id="rucks">—</span></td>
-                                <td class="td1"><span id="out">—</span></td>
-                                <td class="td1"><span id="x">—</span></td>
-                                <td class="td1"><span id="y">—</span></td>
-                                <td class="td1"><span id="half_tr">—</span></td>
-                                <td class="td1"><span id="yt_time">—</span></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
 
             </div><!-- /#attackPanel -->
 
