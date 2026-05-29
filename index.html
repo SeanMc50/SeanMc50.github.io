@@ -430,11 +430,11 @@
             <h1>Welcome to <span>RugbyXY</span></h1>
             <p>A rugby video analysis tool. Track attack phases, passing chains, and play outcomes in real time — then export your data to CSV.</p>
         </div>
-        <div class="welcome-video-wrap">
+        <!-- <div class="welcome-video-wrap">
             <iframe src="https://www.youtube.com/embed/1phg7-lD360"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen></iframe>
-        </div>
+        </div> -->
         <div class="welcome-setup">
             <h2>Match Setup</h2>
             <label for="attTeam">Attacking Team</label>
@@ -775,7 +775,7 @@ window.onload = function() {
     c.height = c.width * 0.5;
     var ctx = c.getContext('2d');
     var img = new Image();
-    img.src = 'images/field.PNG';
+    img.src = 'field.PNG';
     img.onload = function() { ctx.drawImage(img, 0, 0, 300, 150); };
 
     // Show welcome modal on fresh browser session
